@@ -3,3 +3,8 @@ server:
 spring:
   application:
     name: generator
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url:
+    username:
+    password:
