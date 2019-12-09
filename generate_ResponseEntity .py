@@ -11,10 +11,11 @@ entity = sys.argv[1]
 entityService = entity + 'Service'
 classEntity = entity.capitalize()
 ClassEntityServiceImpl = classEntity + 'ServiceImpl'
+package = 'cn.com.ty.lift.system'
 
 template = """
-import com.blog.entity.${classEntity};
-import com.blog.service.impl.${ClassEntityServiceImpl};
+import ${package}.entity.${classEntity};
+import ${package}.service.impl.${ClassEntityServiceImpl};
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
