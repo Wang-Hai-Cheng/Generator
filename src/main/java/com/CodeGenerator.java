@@ -28,6 +28,10 @@ public class CodeGenerator {
     static String package_parent = "com";
     //com和mapper下的包名
     static String moduleName = "projectName";
+    //配置自定义模板列表，为空就没有自定义模板
+    static String[] diyTemplate = {};
+    //配置自定义模板输入路径
+    static String diyTemplateOutPath = "c:/";
 
     /**
      * <p>
@@ -104,24 +108,25 @@ public class CodeGenerator {
 
         // 自定义输出配置
         List<FileOutConfig> fileOutConfigs = new ArrayList<>();
-        // 自定义配置会被优先输出
+        // 配置mapper.xml文件输出
         fileOutConfigs.add(new FileOutConfig("templates/mapper.xml.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                // 自定义输出文件名
                 return projectPath + "/src/main/resources/mapper/" + packageConfig.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-        //此注释代码块可以从自定义模板生成代码到自定义路径
-//        fileOutConfigs.add(new FileOutConfig("templates/diy.ftl") {
-//            @Override
-//            public String outputFile(TableInfo tableInfo) {
-//                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-//                return projectPath + "/src/main/resources/mapper/" + packageConfig.getModuleName()
-//                        + "/" + tableInfo.getEntityName() + "DIY" + StringPool.DOT_XML;
-//            }
-//        });
+        //此代码块可以从自定义模板生成代码到自定义路径，若diyTemplate为
+        for (String s : diyTemplate) {
+            fileOutConfigs.add(new FileOutConfig(s) {
+                @Override
+                public String outputFile(TableInfo tableInfo) {
+                    // 自定义输出文件名
+                    return diyTemplateOutPath;
+                }
+            });
+        }
         injectionConfig.setFileOutConfigList(fileOutConfigs);
         autoGenerator.setCfg(injectionConfig);
 
@@ -130,7 +135,7 @@ public class CodeGenerator {
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);//开启数据表名下划线转java的Entity驼峰命名
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);//开启数据表的字段名下划线转java的字段驼峰命名
         strategyConfig.setEntityBooleanColumnRemoveIsPrefix(true);//Boolean类型字段是否移除is前缀（默认 false）<br>
-        // strategyConfig.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
+//         strategyConfig.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
         strategyConfig.setEntityLombokModel(true);//设置使用Lombok注解,@Data
         strategyConfig.setEntityTableFieldAnnotationEnable(true);//开启表字段注解
         strategyConfig.setRestControllerStyle(true);
