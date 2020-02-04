@@ -27,7 +27,7 @@ public class CodeGenerator {
     static String password = "4b3c1c04ea63";
     static String package_parent = "com";
     //com和mapper下的包名
-    static String moduleName = "";
+    static String moduleName = "projectName";
 
     /**
      * <p>
